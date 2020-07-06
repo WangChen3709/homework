@@ -3,24 +3,30 @@ import numpy as np
 from mlxtend.frequent_patterns import apriori
 from mlxtend.frequent_patterns import association_rules
 
-dataset=pd.read_csv('./MarketBasket/Market_Basket_Optimisation.csv',header=None)
+dataset = pd.read_csv('./MarketBasket/Market_Basket_Optimisation.csv',header=None)
 print(dataset.shape)
 
+'''
+
+基于mlxtend的数据关联分析
+
+'''
+
 #数据整理
-temp_list=[]
+temp_list = []
 for i in range(0,dataset.shape[0]):
-	temp_str=''
+	temp_str = ''
 	for j in range(0,20):
-		if str(dataset.values[i,j])!='nan':
-			temp_str+=str(dataset.values[i,j])+'|'
+		if str(dataset.values[i,j]) != 'nan':
+			temp_str += str(dataset.values[i,j])+'|'
 	temp_list.append(temp_str)
-dataset_new=pd.DataFrame(data=temp_list)
-dataset_new.columns=['MarketBasket']
+dataset_new = pd.DataFrame(data=temp_list)
+dataset_new.columns = ['MarketBasket']
 #dataset_new.to_csv('temp_data.csv',index=True)
 
 #对数据进行one-hot编码
 dataset_new_hot_encoded = dataset_new.drop('MarketBasket',1).join(dataset_new.MarketBasket.str.get_dummies('|'))
-dataset_new_hot_encoded=dataset_new_hot_encoded.dropna(axis=1)
+dataset_new_hot_encoded = dataset_new_hot_encoded.dropna(axis=1)
 #dataset_new_hot_encoded.to_csv('temp_data.csv',index=True)
 #print(dataset_new_hot_encoded.shape)
 
@@ -35,3 +41,26 @@ rules =  association_rules(itemsets, metric='lift', min_threshold=1)
 rules = rules.sort_values(by="lift" , ascending=False) 
 print('-'*20, '关联规则', '-'*20)
 print(rules)
+
+'''
+
+基于efficient_apriori的数据关联分析
+
+'''
+from efficient_apriori import apriori
+
+#生成transactions数据
+
+transacations = []
+for i in range(0,dataset.shape[0]):
+	temp = []
+	for j in range(0,20):
+		if str(dataset.values[i,j]) != 'nan':
+			temp.append(str(dataset.values[i,j]))
+	transacations.append(temp)
+
+#挖掘频繁项集与关联规则
+
+itemsets,rules = apriori(transacations, min_support=0.05, min_confidence=0.2)
+print('频繁项集：', itemsets)
+print('关联规则：', rules)
