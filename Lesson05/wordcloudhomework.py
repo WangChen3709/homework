@@ -33,19 +33,23 @@ def create_word_cloud(f):
 	plt.axis("off")
 	plt.show()
 
-# 加载数据
-dataset = pd.read_csv('./Market_Basket_Optimisation.csv',header=None)
-print(dataset.shape)
+def main():
+	# 加载数据
+	dataset = pd.read_csv('./Market_Basket_Optimisation.csv',header=None)
+	print(dataset.shape)
 
-#数据处理
-transacations = []
-for i in range(dataset.shape[0]):
-	temp = []
-	for j in range(0,20):
-		if str(dataset.shape[i,j]) != 'nan':
-			temp.append(str(dataset.shape[i,j]))
-	transacations.append(temp)
+	#数据处理
+	transacations = []
+	for i in range(dataset.shape[0]):
+		temp = []
+		for j in range(0,20):
+			if str(dataset.shape[i,j]) != 'nan':
+				temp.append(str(dataset.shape[i,j]))
+		transacations.append(temp)
 
-#生成词云
-all_word = ' '.join('%s' %item for item in transacations)
-create_word_cloud(all_word)
+	#生成词云
+	all_word = ' '.join('%s' %item for item in transacations)
+	create_word_cloud(all_word)
+
+if __name__ == '__main__':
+	main()
