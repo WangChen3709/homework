@@ -1,10 +1,10 @@
 from wordcloud import WordCloud
 import pandas as pd
 import matplotlib.pyplot as plt
-from PIL import Image
 import numpy as np
-from lxml import etree
 from nltk.tokenize import word_tokenize
+
+file='./Market_Basket_Optimisation.csv'
 
 # 去掉停用词
 def remove_stop_words(f):
@@ -35,7 +35,7 @@ def create_word_cloud(f):
 
 def main():
 	# 加载数据
-	dataset = pd.read_csv('./Market_Basket_Optimisation.csv',header=None)
+	dataset = pd.read_csv(file, header=None)
 	print(dataset.shape)
 
 	#数据处理
