@@ -43,8 +43,8 @@ def main():
 	for i in range(dataset.shape[0]):
 		temp = []
 		for j in range(0,20):
-			if str(dataset.shape[i,j]) != 'nan':
-				temp.append(str(dataset.shape[i,j]))
+			if str(dataset.values[i,j]) != 'nan':
+				temp.append(str(dataset.values[i,j]))
 		transacations.append(temp)
 
 	#生成词云
